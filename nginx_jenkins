@@ -1,0 +1,40 @@
+upstream jenkins {
+    server 127.0.0.1:8080 fail_timeout=0;
+}
+
+server {
+  listen 80 default;
+  listen [::]:80 default;
+  server_name 127.0.0.1 localhost; ## Other DNS FQDNs for your server
+  return 301 https://dunamis-viz-ci.corp.adobe.com$request_uri;
+  rewrite ^ https://server_name$request_uri? permanent;
+}
+ 
+server {
+    listen 443 default ssl;
+    listen [::]:443 default ssl;
+    server_name localhost ; ## Other DNS FQDNs for your server
+    
+    ssl_certificate       /etc/letsencrypt/live/localhost/fullchain.pem;
+    ssl_certificate_key   /etc/letsencrypt/live/localhost/privkey.pem;
+
+    ssl_session_timeout  5m;
+    ssl_protocols  SSLv3 TLSv1;
+    ssl_ciphers HIGH:!ADH:!MD5;
+    ssl_prefer_server_ciphers on;
+ 
+    location / {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect http:// https://;
+  
+        add_header Pragma "no-cache";
+ 
+        if (!-f $request_filename) {
+            proxy_pass http://jenkins;
+            break;
+        }
+    }
+}
