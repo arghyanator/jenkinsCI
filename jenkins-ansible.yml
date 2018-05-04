@@ -14,25 +14,25 @@
     - set_fact:
         servername: "{{ servernm }}"
 
-    - name: Create deploy group
+    - name: Create custom group
       group:
-        name: deploy
+        name: custom
         state: present
 
-    - name: create deploy user for dunamis team
+    - name: create custom user for your team or custom SSH user
       user:
-        name: deploy
+        name: custom
         groups:
-          - deploy
+          - user
           - sudo
         state: present
         shell: /bin/bash
         createhome: yes
-        home: /home/deploy
+        home: /home/custom
 
-    - name: create ssh directory for deploy user
+    - name: create ssh directory for custom user
       file:
-        path: /home/deploy/.ssh
+        path: /home/custom/.ssh
         state: directory
 
     - name: Download ssh pub key for your custom user (other than ec2-user for example)
