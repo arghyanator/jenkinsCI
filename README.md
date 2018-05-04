@@ -4,6 +4,7 @@ Set up a Jenkins Server
 **Don't forget to upload required files and set S3 URL in shell script**<br>
 **Don't forget to set S3 URL for files in Ansible playbook**<br>
 **Don't forget to set gpg passphrase in s3cmd template in Ansible playbook**<br>
+**Uncomment the Ansible playbook lines to deploy self-signed cert OR if you have cert - then the lines to deploy CA signed CERT**<br> 
 
 This Shell script (can be used as a start-up 'user-data' or 'configuration-script' to set up jenkins on Ubuntu 16.x server
 
