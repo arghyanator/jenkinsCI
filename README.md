@@ -45,31 +45,31 @@ The script downloads the groovy script, Ansible playbook and Nginx proxy configu
     - set_fact:
         servername: "{{ servernm }}"
 
-    - name: Create deploy group
+    - name: Create custom group
       group:
-        name: deploy
+        name: custom
         state: present
 
-    - name: create deploy user for dunamis team
+    - name: create deploy user for your team or other linux custome user
       user:
-        name: deploy
+        name: custom
         groups:
           - deploy
           - sudo
         state: present
         shell: /bin/bash
         createhome: yes
-        home: /home/deploy
+        home: /home/custom
 
-    - name: create ssh directory for deploy user
+    - name: create ssh directory for custom user
       file:
-        path: /home/deploy/.ssh
+        path: /home/custom/.ssh
         state: directory
 
     - name: Download ssh pub key for your custom user (other than ec2-user for example)
       get_url:
         url: <<your S3 or Google docs URL with SSH keys>>
-        dest: /home/deploy/.ssh/authorized_keys
+        dest: /home/custom/.ssh/authorized_keys
         mode: 0600
         owner: deploy
         group: deploy
