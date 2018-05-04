@@ -416,7 +416,7 @@ server {
   listen 80 default;
   listen [::]:80 default;
   server_name 127.0.0.1 localhost; ## Other DNS FQDNs for your server
-  return 301 https://dunamis-viz-ci.corp.adobe.com$request_uri;
+  return 301 https://<your FQDN>$request_uri;
   rewrite ^ https://server_name$request_uri? permanent;
 }
  
